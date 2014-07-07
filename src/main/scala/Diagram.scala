@@ -18,7 +18,7 @@ object Diagram {
       val name = System.currentTimeMillis.toString
       val dotFile = new File(dir, name + ".dot")
       val svgFile = new File(dir, name + ".svg")
-      java.nio.file.Files.write(dotFile.toPath, java.util.Collections.singleton(d))
+      sbt.IO.writeLines(dotFile, d :: Nil)
       Seq("dot", "-o" + svgFile.getAbsolutePath, "-Tsvg", dotFile.getAbsolutePath).!
       scala.io.Source.fromFile(svgFile).mkString
     }
