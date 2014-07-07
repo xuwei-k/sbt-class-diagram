@@ -1,6 +1,6 @@
-> classDiagrams scala.collection.immutable.List
+> classDiagram scala.collection.immutable.List
 $ pause
-> classDiagrams scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism
+> classDiagram scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism
 $ pause
-> classDiagrams scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow
+> classDiagram scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow
 $ pause

@@ -5,16 +5,16 @@ import sbt.complete.Parsers
 
 object Plugin extends sbt.Plugin {
 
-  object DiagramsKeys {
-    val classDiagrams = InputKey[Unit]("classDiagrams")
-    val fileName = SettingKey[String]("classDiagramsFileName")
+  object DiagramKeys {
+    val classDiagram = InputKey[Unit]("classDiagram")
+    val fileName = SettingKey[String]("classDiagramFileName")
   }
 
-  import DiagramsKeys._
+  import DiagramKeys._
 
-  val classDiagramsSettings: Seq[Def.Setting[_]] = Seq(
-    fileName := "classDiagrams.svg",
-    classDiagrams := {
+  val classDiagramSettings: Seq[Def.Setting[_]] = Seq(
+    fileName := "classDiagram.svg",
+    classDiagram := {
       val classes = Parsers.spaceDelimited("<class names>").parsed
       val loader = (testLoader in Test).value
       val clazz = loader.loadClass(classes.head)
