@@ -3,6 +3,7 @@
 ### requirement
 
 - <http://www.graphviz.org/>
+- sbt 0.13.x
 
 ### install
 
