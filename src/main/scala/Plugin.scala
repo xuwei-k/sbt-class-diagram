@@ -15,6 +15,10 @@ object Plugin extends sbt.Plugin {
     val classNames = TaskKey[Seq[String]]("classDiagramClassNames")
   }
 
+  private[this] val getAllClassNames = Def.task(
+    Tests.allDefs((compile in Compile).value).collect{ case c: ClassLike => c.name }
+  )
+
   import diagram.Plugin.DiagramKeys._
   import sbinary.DefaultProtocol._
   import sbt.Cache.seqFormat
@@ -30,9 +34,11 @@ object Plugin extends sbt.Plugin {
     ){
       Def.task{ classes: Seq[String] =>
         Def.task{
+          lazy val all = getAllClassNames.value.toList
+          val sample = classes.headOption.getOrElse(all.head)
           val loader = (testLoader in Test).value
-          val clazz = loader.loadClass(classes.head)
-          val dot = Diagram(loader, classes.toList)
+          val clazz = loader.loadClass(sample)
+          val dot = Diagram(loader, if(classes.nonEmpty) classes.toList else all)
           val svg = Keys.target.value / fileName.value
           IO.writeLines(svg, dot :: Nil)
           svg
@@ -41,7 +47,7 @@ object Plugin extends sbt.Plugin {
     }
 
   val classDiagramSettings: Seq[Def.Setting[_]] = Seq(
-    classNames := Tests.allDefs((compile in Compile).value).collect{ case c: ClassLike => c.name },
+    classNames <<= getAllClassNames,
     classNames <<= classNames storeAs classNames triggeredBy (compile in Compile),
     fileName := "classDiagram.svg",
     classDiagram <<= writeTask.map{ svg =>
