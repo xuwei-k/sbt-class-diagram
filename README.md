@@ -10,7 +10,7 @@
 - `project/plugin.sbt`
 
 ```scala
-addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.2")
+addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.3")
 ```
 
 
