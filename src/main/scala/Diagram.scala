@@ -5,13 +5,13 @@ import Reflect.getAllClassAndTrait
 
 object Diagram {
 
-  def apply(loader: ClassLoader, classNames: List[String]): String = {
+  def apply(loader: ClassLoader, classNames: List[String], filter: Class[_] => Boolean): String = {
     val classes = classNames.map{loader.loadClass}
     val list = {
       classes.flatMap{makeClassNodes} ::: classes.map { c =>
         ClassNode(c, Option(c.getSuperclass).toList ::: c.getInterfaces.toList)
       }
-    }.distinct.filter{ c => !ClassNode.exceptList.contains(c.clazz) }
+    }.distinct.filter{c => filter(c.clazz)}
     val d = ClassNode.dot(list)
     withTmpDir{ dir =>
       import sys.process._

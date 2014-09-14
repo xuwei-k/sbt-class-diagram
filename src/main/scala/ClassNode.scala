@@ -11,7 +11,6 @@ final case class ClassNode(clazz: Class[_], parents: List[Class[_]]) {
 }
 
 object ClassNode {
-  val exceptList = List("java.lang.Object").map { Class.forName }
 
   def dot(allClassNodes: List[ClassNode]): String = {
     val header = """digraph "class-diagram" {

@@ -13,6 +13,7 @@ object Plugin extends sbt.Plugin {
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
     val fileName = SettingKey[String]("classDiagramFileName")
     val classNames = TaskKey[Seq[String]]("classDiagramClassNames")
+    val classDiagramFilter = TaskKey[Class[_] => Boolean]("classDiagramFilter")
   }
 
   import diagram.Plugin.DiagramKeys._
@@ -32,7 +33,7 @@ object Plugin extends sbt.Plugin {
         Def.task{
           val loader = (testLoader in Test).value
           val clazz = loader.loadClass(classes.head)
-          val dot = Diagram(loader, classes.toList)
+          val dot = Diagram(loader, classes.toList, classDiagramFilter.value)
           val svg = Keys.target.value / fileName.value
           IO.writeLines(svg, dot :: Nil)
           svg
@@ -48,6 +49,7 @@ object Plugin extends sbt.Plugin {
       java.awt.Desktop.getDesktop.open(svg)
       svg
     },
+    classDiagramFilter := {_ != classOf[java.lang.Object]},
     classDiagramWrite <<= writeTask
   )
 
