@@ -13,7 +13,7 @@ object Plugin extends sbt.Plugin {
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
     val fileName = SettingKey[String]("classDiagramFileName")
     val classNames = TaskKey[Seq[String]]("classDiagramClassNames")
-    val classDiagramFilter = TaskKey[Class[_] => Boolean]("classDiagramFilter")
+    val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting")
   }
 
   import diagram.Plugin.DiagramKeys._
@@ -33,7 +33,7 @@ object Plugin extends sbt.Plugin {
         Def.task{
           val loader = (testLoader in Test).value
           val clazz = loader.loadClass(classes.head)
-          val dot = Diagram(loader, classes.toList, classDiagramFilter.value)
+          val dot = Diagram(loader, classes.toList, classDiagramSetting.value)
           val svg = Keys.target.value / fileName.value
           IO.writeLines(svg, dot :: Nil)
           svg
@@ -49,7 +49,16 @@ object Plugin extends sbt.Plugin {
       java.awt.Desktop.getDesktop.open(svg)
       svg
     },
-    classDiagramFilter := {_ != classOf[java.lang.Object]},
+    classDiagramSetting := classDiagramSetting.?.value.getOrElse{
+      DiagramSetting(
+        name = "diagram",
+        commonNodeSetting = Map("shape" -> "record", "style" -> "filled"),
+        commonEdgeSetting = Map("arrowtail" -> "none"),
+        nodeSetting = clazz => Map("fillcolor" -> {if(clazz.isInterface) "#799F5A" else "#7996AC"}),
+        edgeSetting = (_, _) => Map.empty,
+        filter = _ != classOf[java.lang.Object]
+      )
+    },
     classDiagramWrite <<= writeTask
   )
 

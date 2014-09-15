@@ -3,8 +3,6 @@ package diagram
 import Reflect.getAllClassAndTrait
 
 final case class ClassNode(clazz: Class[_], parents: List[Class[_]]) {
-  import ClassNode._
-
   lazy val allParents = getAllClassAndTrait(this.clazz)
 
   private lazy val fullName = clazz.getName
@@ -12,25 +10,34 @@ final case class ClassNode(clazz: Class[_], parents: List[Class[_]]) {
 
 object ClassNode {
 
-  def dot(allClassNodes: List[ClassNode]): String = {
-    val header = """digraph "class-diagram" {
-      |    node [
-      |        shape="record"
-      |    ]
-      |    edge [
-      |        arrowtail="none"
-      |    ]""".stripMargin
-
+  def dot(allClassNodes: List[ClassNode], setting: DiagramSetting): String = {
     val quote = "\"" + (_: String) + "\""
-
-    val edges = allClassNodes.map(n => quote(n.fullName)).sorted.mkString("\n")
-    val nodes = for {
-      c <- allClassNodes
-      p <- c.parents
-    } yield {
-      quote(c.fullName) + " -> " + quote(p.getName)
+    val map2string = { (map: Map[String, String]) =>
+      if(map.isEmpty) ""
+      else map.map { case (k, v) => k + "=" + quote(v)}.mkString(" [", ", ", "]")
     }
 
-    List(header, edges, nodes.sorted.mkString("\n")).mkString("\n") + "}"
+    val nodes = allClassNodes.map{ n =>
+      quote(n.fullName) + map2string(setting.nodeSetting(n.clazz))
+    }.sorted
+    val edges = for {
+      c <- allClassNodes
+      p <- c.parents
+      if setting.filter(p)
+    } yield {
+      quote(c.fullName) + " -> " + quote(p.getName) + map2string(setting.edgeSetting(c.clazz, p))
+    }
+
+    s"""digraph ${quote(setting.name)} {
+    |
+    |  node ${map2string(setting.commonNodeSetting)}
+    |
+    |  edge ${map2string(setting.commonEdgeSetting)}
+    |
+    |  ${nodes.mkString("\n")}
+    |
+    |  ${edges.mkString("\n")}
+    |
+    | }""".stripMargin
   }
 }

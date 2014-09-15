@@ -5,14 +5,14 @@ import Reflect.getAllClassAndTrait
 
 object Diagram {
 
-  def apply(loader: ClassLoader, classNames: List[String], filter: Class[_] => Boolean): String = {
+  def apply(loader: ClassLoader, classNames: List[String], setting: DiagramSetting): String = {
     val classes = classNames.map{loader.loadClass}
     val list = {
       classes.flatMap{makeClassNodes} ::: classes.map { c =>
         ClassNode(c, Option(c.getSuperclass).toList ::: c.getInterfaces.toList)
       }
-    }.distinct.filter{c => filter(c.clazz)}
-    val d = ClassNode.dot(list)
+    }.distinct.filter{c => setting.filter(c.clazz)}
+    val d = ClassNode.dot(list, setting)
     withTmpDir{ dir =>
       import sys.process._
       val name = System.currentTimeMillis.toString
