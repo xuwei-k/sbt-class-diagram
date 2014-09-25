@@ -13,7 +13,7 @@ object Plugin extends sbt.Plugin {
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
     val fileName = SettingKey[String]("classDiagramFileName")
     val classNames = TaskKey[Seq[String]]("classDiagramClassNames")
-    val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting")
+    val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting", "http://www.graphviz.org/pdf/dotguide.pdf")
   }
 
   import diagram.Plugin.DiagramKeys._
