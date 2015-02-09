@@ -2,5 +2,5 @@
 $ pause
 > classDiagram scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism
 $ pause
-> classDiagram scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow
+> classDiagram scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow scalaz.Associative scalaz.ProChoice
 $ pause
