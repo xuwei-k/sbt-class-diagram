@@ -1,6 +1,6 @@
 classDiagramSettings
 
-val scalazVersion = "7.1.0"
+val scalazVersion = "7.1.1"
 
 scalaVersion := "2.11.5"
 
