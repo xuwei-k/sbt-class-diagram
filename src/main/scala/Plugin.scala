@@ -66,10 +66,17 @@ object Plugin extends sbt.Plugin {
     classNames match {
       case Nil =>
         defaultParser
-      case _   =>
-        val other = Space ~> token(StringBasic, _ => true)
-        ((Space ~> classNames.distinct.map(token(_)).reduce(_ | _)) | other).*
+      case _ =>
+        distinctParser(classNames.toSet)
     }
+  }
+
+  private[this] def distinctParser(exs: Set[String]): Parser[Seq[String]] = {
+    val base = token(Space) ~> token(NotSpace examples exs)
+    base.flatMap { ex =>
+      val (_, notMatching) = exs.partition(GlobFilter(ex).accept)
+      distinctParser(notMatching).map { result => ex +: result }
+    } ?? Nil
   }
 }
 
