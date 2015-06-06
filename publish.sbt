@@ -70,3 +70,8 @@ pomPostProcess := { node =>
   val stripTestScope = stripIf { n => n.label == "dependency" && (n \ "scope").text == "test" }
   new RuleTransformer(stripTestScope).transform(node)(0)
 }
+
+credentials ++= PartialFunction.condOpt(sys.env.get("SONATYPE_USER") -> sys.env.get("SONATYPE_PASSWORD")){
+  case (Some(user), Some(pass)) =>
+    Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", user, pass)
+}.toList

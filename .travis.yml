@@ -1,6 +1,11 @@
 language: scala
 
 script:
-  - sbt test
+  - sbt test $(if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then echo "publish"; fi)
 
 sudo: false
+
+env:
+  global:
+  - secure: N2ErZE/CXMyNXnRBliUawkerOdoywfxEU4vVfEN1X/WPk4j4VWN7UcAIZr1qEmOcWmpvXm2DetKoH6ZYdVBvwrMkzMkoiw5uN0FgPO17dvVjGyftOlUcwgpv9MznTriVzlDiGCLDpkjRv/xD7AU7JImWjcoRBJv7ykmS1CG2FTY=
+  - secure: MfsXspnlw9+NB7czhE09qbzB/pgq51ylx88A3kMH9f69HEnkwChH6JE+rXvDF6yfco6ZE3KE1FhvmuGPJsj65zH+K9gjbrSe2gmOMd0LlQGVq7lt1MUdhZtB7Qj0FacHG/oXjCOzVwSQhbaI9y8ejm7KH0AXU2RMVI4ZrOJy8ms=
