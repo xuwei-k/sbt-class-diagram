@@ -7,17 +7,26 @@
 
 ### install
 
-- `project/plugin.sbt`
+#### `build.sbt`
+
+```scala
+classDiagramSettings
+```
+
+#### `project/plugin.sbt`
+
+##### latest stable version
 
 ```scala
 addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.4")
 ```
 
-
-- `build.sbt`
+##### snapshot version
 
 ```scala
-classDiagramSettings
+resolvers += Opts.resolver.sonatypeSnapshots
+
+addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.5-SNAPSHOT")
 ```
 
 ### sample
