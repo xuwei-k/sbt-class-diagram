@@ -62,7 +62,7 @@ object Plugin extends sbt.Plugin {
     classDiagramWrite <<= writeTask
   )
 
-  private def createParser(classNames: Seq[String]): Parser[Seq[String]] = {
+  private[this] def createParser(classNames: Seq[String]): Parser[Seq[String]] = {
     classNames match {
       case Nil =>
         defaultParser
