@@ -6,6 +6,8 @@ import sbt.complete.DefaultParsers._
 import sbt.complete.Parser
 import xsbti.api.ClassLike
 
+import scala.reflect.NameTransformer
+
 object Plugin extends sbt.Plugin {
 
   object DiagramKeys {
@@ -29,8 +31,11 @@ object Plugin extends sbt.Plugin {
        (state, classes) => classes.fold(defaultParser)(createParser)
       )
     ){
-      Def.task{ classes: Seq[String] =>
+      Def.task{ classes0: Seq[String] =>
         Def.task{
+          val classes = classes0.map(
+            _.split('.').map(NameTransformer.encode).mkString(".")
+          )
           val loader = (testLoader in Test).value
           val clazz = loader.loadClass(classes.head)
           val dot = Diagram(loader, classes.toList, classDiagramSetting.value)
@@ -42,7 +47,9 @@ object Plugin extends sbt.Plugin {
     }
 
   val classDiagramSettings: Seq[Def.Setting[_]] = Seq(
-    classNames := Tests.allDefs((compile in Compile).value).collect{ case c: ClassLike => c.name },
+    classNames := Tests.allDefs((compile in Compile).value).collect{
+      case c: ClassLike => ClassNode.decodeClassName(c.name)
+    },
     classNames <<= classNames storeAs classNames triggeredBy (compile in Compile),
     fileName := "classDiagram.svg",
     classDiagram <<= writeTask.map{ svg =>

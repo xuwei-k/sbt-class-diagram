@@ -2,13 +2,19 @@ package diagram
 
 import Reflect.getAllClassAndTrait
 
+import scala.reflect.NameTransformer
+
 final case class ClassNode(clazz: Class[_], parents: List[Class[_]]) {
   lazy val allParents = getAllClassAndTrait(this.clazz)
 
   private lazy val fullName = clazz.getName
+  private def fullNameDecoded = ClassNode.decodeClassName(fullName).replace("\\", "\\\\")
 }
 
 object ClassNode {
+
+  def decodeClassName(name: String): String =
+    name.split('.').map(NameTransformer.decode).mkString(".")
 
   def dot(allClassNodes: List[ClassNode], setting: DiagramSetting): String = {
     val quote = "\"" + (_: String) + "\""
@@ -18,14 +24,14 @@ object ClassNode {
     }
 
     val nodes = allClassNodes.map{ n =>
-      quote(n.fullName) + map2string(setting.nodeSetting(n.clazz))
+      quote(n.fullNameDecoded) + map2string(setting.nodeSetting(n.clazz))
     }.sorted
     val edges = for {
       c <- allClassNodes
       p <- c.parents
       if setting.filter(p)
     } yield {
-      quote(c.fullName) + " -> " + quote(p.getName) + map2string(setting.edgeSetting(c.clazz, p))
+      quote(c.fullNameDecoded) + " -> " + quote(p.getName) + map2string(setting.edgeSetting(c.clazz, p))
     }
 
     s"""digraph ${quote(setting.name)} {

@@ -1,3 +1,5 @@
+> classDiagram scalaz.\/
+$ pause
 > classDiagram scala.collection.immutable.List
 $ pause
 > classDiagram scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism
