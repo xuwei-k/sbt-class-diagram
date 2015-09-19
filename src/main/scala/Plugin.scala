@@ -61,6 +61,7 @@ object Plugin extends sbt.Plugin {
         name = "diagram",
         commonNodeSetting = Map("shape" -> "record", "style" -> "filled"),
         commonEdgeSetting = Map("arrowtail" -> "none"),
+        nodeName = clazz => ClassNode.decodeClassName(clazz.getName),
         nodeSetting = clazz => Map("fillcolor" -> {if(clazz.isInterface) "#799F5A" else "#7996AC"}),
         edgeSetting = (_, _) => Map.empty,
         filter = _ != classOf[java.lang.Object]
