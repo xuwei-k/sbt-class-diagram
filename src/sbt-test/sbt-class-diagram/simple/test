@@ -2,7 +2,7 @@
 $ pause
 > classDiagram scala.collection.immutable.List
 $ pause
-> classDiagram scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism scalaz.Divisible
+> classDiagram scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism scalaz.Divisible scalaz.BindRec
 $ pause
 > classDiagram scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow scalaz.Associative scalaz.ProChoice
 $ pause
