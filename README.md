@@ -26,7 +26,7 @@ addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.7")
 ```scala
 resolvers += Opts.resolver.sonatypeSnapshots
 
-addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.7-SNAPSHOT")
+addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.8-SNAPSHOT")
 ```
 
 ### sample
