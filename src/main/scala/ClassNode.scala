@@ -35,15 +35,15 @@ object ClassNode {
     }
 
     s"""digraph ${quote(setting.name)} {
-    |
-    |  node ${map2string(setting.commonNodeSetting)}
-    |
-    |  edge ${map2string(setting.commonEdgeSetting)}
-    |
-    |  ${nodes.mkString("\n")}
-    |
-    |  ${edges.mkString("\n")}
-    |
-    | }""".stripMargin
+
+node ${map2string(setting.commonNodeSetting)}
+
+edge ${map2string(setting.commonEdgeSetting)}
+
+${nodes.mkString("\n")}
+
+${edges.mkString("\n")}
+
+}"""
   }
 }
