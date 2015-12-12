@@ -12,8 +12,10 @@ object Plugin extends sbt.Plugin {
 
   object DiagramKeys {
     val classDiagram = InputKey[File]("classDiagram", "write svg file and open")
+    val classDiagramDot = InputKey[String]("classDiagramDot")
+    val classDiagramSVG = InputKey[String]("classDiagramSVG")
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
-    val fileName = SettingKey[String]("classDiagramFileName")
+    val fileName = SettingKey[String]("classDiagramFileName", "svg file name")
     val classNames = TaskKey[Seq[String]]("classDiagramClassNames")
     val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting", "http://www.graphviz.org/pdf/dotguide.pdf")
   }
@@ -25,34 +27,41 @@ object Plugin extends sbt.Plugin {
   private[this] val defaultParser: Parser[Seq[String]] =
     (Space ~> token(StringBasic, "<class name>")).*
 
-  private[this] val writeTask: Def.Initialize[InputTask[File]] =
+  private[this] def dotTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
     InputTask.createDyn(
       Defaults.loadForParser(classNames)(
        (state, classes) => classes.fold(defaultParser)(createParser)
       )
     ){
       Def.task{ classes0: Seq[String] =>
-        Def.task{
-          val classes = classes0.map(
-            _.split('.').map(NameTransformer.encode).mkString(".")
-          )
-          val loader = (testLoader in Test).value
-          val clazz = loader.loadClass(classes.head)
-          val dot = Diagram(loader, classes.toList, classDiagramSetting.value)
-          val svg = Keys.target.value / fileName.value
-          IO.writeLines(svg, dot :: Nil)
-          svg
-        }
+        val classes = classes0.map(
+          _.split('.').map(NameTransformer.encode).mkString(".")
+        )
+        val loader = (testLoader in Test).value
+        val clazz = loader.loadClass(classes.head)
+        val dot = Diagram.dot(loader, classes.toList, classDiagramSetting.value)
+        f(dot)
       }
     }
+
+  private[this] def svgTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
+    dotTask(dot => f(Diagram.dot2svg(dot)))
+
+  private[this] val writeSVGTask = svgTask{ svg =>
+    Def.task{
+      val svgFile = Keys.target.value / fileName.value
+      IO.writeLines(svgFile, svg :: Nil)
+      svgFile
+    }
+  }
 
   val classDiagramSettings: Seq[Def.Setting[_]] = Seq(
     classNames := Tests.allDefs((compile in Compile).value).collect{
       case c: ClassLike => ClassNode.decodeClassName(c.name)
     },
     classNames <<= classNames storeAs classNames triggeredBy (compile in Compile),
-    fileName := "classDiagram.svg",
-    classDiagram <<= writeTask.map{ svg =>
+    fileName := fileName.?.value.getOrElse("classDiagram.svg"),
+    classDiagram <<= writeSVGTask.map{ svg =>
       java.awt.Desktop.getDesktop.open(svg)
       svg
     },
@@ -66,7 +75,9 @@ object Plugin extends sbt.Plugin {
         filter = _ != classOf[java.lang.Object]
       )
     },
-    classDiagramWrite <<= writeTask
+    classDiagramDot <<= dotTask(Def.task(_)),
+    classDiagramSVG <<= svgTask(Def.task(_)),
+    classDiagramWrite <<= writeSVGTask
   )
 
   private[this] def createParser(classNames: Seq[String]): Parser[Seq[String]] = {

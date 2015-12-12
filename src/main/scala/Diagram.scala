@@ -5,23 +5,27 @@ import Reflect.getAllClassAndTrait
 
 object Diagram {
 
-  def apply(loader: ClassLoader, classNames: List[String], setting: DiagramSetting): String = {
+  def apply(loader: ClassLoader, classNames: List[String], setting: DiagramSetting): String =
+    dot2svg(dot(loader, classNames, setting))
+
+  def dot(loader: ClassLoader, classNames: List[String], setting: DiagramSetting): String = {
     val classes = classNames.map{loader.loadClass}
     val list = {
       classes.flatMap{makeClassNodes} ::: classes.map { c =>
         ClassNode(c, Option(c.getSuperclass).toList ::: c.getInterfaces.toList)
       }
     }.distinct.filter{c => setting.filter(c.clazz)}
-    val d = ClassNode.dot(list, setting)
-    withTmpDir{ dir =>
-      import sys.process._
-      val name = System.currentTimeMillis.toString
-      val dotFile = new File(dir, name + ".dot")
-      val svgFile = new File(dir, name + ".svg")
-      sbt.IO.writeLines(dotFile, d :: Nil)
-      Seq("dot", "-o" + svgFile.getAbsolutePath, "-Tsvg", dotFile.getAbsolutePath).!
-      scala.io.Source.fromFile(svgFile).mkString
-    }
+    ClassNode.dot(list, setting)
+  }
+
+  def dot2svg(dotString: String): String = withTmpDir{ dir =>
+    import sys.process._
+    val name = System.currentTimeMillis.toString
+    val dotFile = new File(dir, name + ".dot")
+    val svgFile = new File(dir, name + ".svg")
+    sbt.IO.writeLines(dotFile, dotString :: Nil)
+    Seq("dot", "-o" + svgFile.getAbsolutePath, "-Tsvg", dotFile.getAbsolutePath).!
+    scala.io.Source.fromFile(svgFile).mkString
   }
 
   private def withTmpDir[T](action: File => T): T = {
