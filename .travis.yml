@@ -1,9 +1,16 @@
 language: scala
 
 script:
-  - sbt test $(if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then echo "publish"; fi)
+  - sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
+  - cat ./src/sbt-test/sbt-class-diagram/simple/test
+  - sbt test scripted $(if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then echo "publish"; fi)
 
 sudo: false
+
+addons:
+  apt:
+    packages:
+    - graphviz
 
 env:
   global:
