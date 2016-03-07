@@ -1,6 +1,4 @@
-buildInfoSettings
-
-sourceGenerators in Compile <+= buildInfo
+enablePlugins(BuildInfoPlugin)
 
 buildInfoKeys := Seq[BuildInfoKey](
   organization,
