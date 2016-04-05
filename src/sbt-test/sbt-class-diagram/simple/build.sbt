@@ -1,8 +1,8 @@
 classDiagramSettings
 
-val scalazVersion = "7.2.1"
+val scalazVersion = "7.2.2"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 libraryDependencies += "org.scalaz" %% "scalaz-core" % scalazVersion
 
