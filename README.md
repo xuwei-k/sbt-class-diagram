@@ -36,7 +36,6 @@ addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.8-SNAPSHOT")
 ![List](https://raw.githubusercontent.com/xuwei-k/sbt-class-diagram/master/sample/list.png)
 
 
-#### scalaz 7.1.x
+#### scalaz 7.2.x
 
-![Scalaz](https://raw.githubusercontent.com/xuwei-k/sbt-class-diagram/master/sample/scalaz.png)
-
+[![Scalaz](http://xuwei-k.github.io/scalaz-docs/diagram1.svg)](http://xuwei-k.github.io/scalaz-docs/diagram1.svg)
