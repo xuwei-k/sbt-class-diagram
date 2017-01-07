@@ -59,9 +59,12 @@ object Plugin extends sbt.Plugin {
     classNames := Tests.allDefs((compile in Compile).value).collect{
       case c: ClassLike => ClassNode.decodeClassName(c.name)
     },
+    // can't use := and .value
+    // https://github.com/sbt/sbt/issues/1444
     classNames <<= classNames storeAs classNames triggeredBy (compile in Compile),
     fileName := fileName.?.value.getOrElse("classDiagram.svg"),
-    classDiagram <<= writeSVGTask.map{ svg =>
+    classDiagram := {
+      val svg = writeSVGTask.evaluated
       java.awt.Desktop.getDesktop.open(svg)
       svg
     },
@@ -75,9 +78,9 @@ object Plugin extends sbt.Plugin {
         filter = _ != classOf[java.lang.Object]
       )
     },
-    classDiagramDot <<= dotTask(Def.task(_)),
-    classDiagramSVG <<= svgTask(Def.task(_)),
-    classDiagramWrite <<= writeSVGTask
+    classDiagramDot := dotTask(Def.task(_)).evaluated,
+    classDiagramSVG := svgTask(Def.task(_)).evaluated,
+    classDiagramWrite := writeSVGTask.evaluated
   )
 
   private[this] def createParser(classNames: Seq[String]): Parser[Seq[String]] = {

@@ -15,7 +15,7 @@ scalacOptions ++= (
   Nil
 )
 
-watchSources <++= (sbtTestDirectory).map{ dir => (dir ***).get }
+watchSources ++= sbtTestDirectory.value.***.get
 
 def gitHash: Option[String] = scala.util.Try(
   sys.process.Process("git rev-parse HEAD").lines_!.head
