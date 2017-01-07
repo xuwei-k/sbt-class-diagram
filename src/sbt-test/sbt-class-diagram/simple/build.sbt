@@ -1,4 +1,4 @@
-classDiagramSettings
+enablePlugins(ClassDiagramPlugin)
 
 val scalazVersion = "7.2.8"
 
@@ -15,7 +15,7 @@ def urlMap(clazz: Class[_]): Map[String, String] =
   else
     Map()
 
-DiagramKeys.classDiagramSetting ~= { s =>
+classDiagramSetting ~= { s =>
   s.copy(
     nodeSetting = clazz => s.nodeSetting(clazz) ++ urlMap(clazz),
     commonNodeSetting = s.commonNodeSetting + ("target" -> "_blank")

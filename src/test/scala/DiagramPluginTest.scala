@@ -8,7 +8,7 @@ import scala.util.Random
 final class DiagramPluginTest {
 
   private[this] def invokeParser(classes: Seq[String]): Parser[Seq[String]] = {
-    val clazz = diagram.Plugin.getClass
+    val clazz = diagram.ClassDiagramPlugin.getClass
     val obj = clazz.getField("MODULE$").get(null)
     val methodName = "createParser"
     val methods = clazz.getDeclaredMethods

@@ -8,19 +8,19 @@ import xsbti.api.ClassLike
 
 import scala.reflect.NameTransformer
 
-object Plugin extends sbt.Plugin {
+object ClassDiagramPlugin extends AutoPlugin {
 
-  object DiagramKeys {
+  object autoImport {
     val classDiagram = InputKey[File]("classDiagram", "write svg file and open")
     val classDiagramDot = InputKey[String]("classDiagramDot")
     val classDiagramSVG = InputKey[String]("classDiagramSVG")
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
-    val fileName = SettingKey[String]("classDiagramFileName", "svg file name")
-    val classNames = TaskKey[Seq[String]]("classDiagramClassNames")
+    val classDiagramFileName = SettingKey[String]("classDiagramFileName", "svg file name")
+    val classDiagramClassNames = TaskKey[Seq[String]]("classDiagramClassNames")
     val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting", "http://www.graphviz.org/pdf/dotguide.pdf")
   }
 
-  import diagram.Plugin.DiagramKeys._
+  import autoImport._
   import sbinary.DefaultProtocol._
   import sbt.Cache.seqFormat
 
@@ -29,7 +29,7 @@ object Plugin extends sbt.Plugin {
 
   private[this] def dotTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
     InputTask.createDyn(
-      Defaults.loadForParser(classNames)(
+      Defaults.loadForParser(classDiagramClassNames)(
        (state, classes) => classes.fold(defaultParser)(createParser)
       )
     ){
@@ -49,20 +49,20 @@ object Plugin extends sbt.Plugin {
 
   private[this] val writeSVGTask = svgTask{ svg =>
     Def.task{
-      val svgFile = Keys.target.value / fileName.value
+      val svgFile = Keys.target.value / classDiagramFileName.value
       IO.writeLines(svgFile, svg :: Nil)
       svgFile
     }
   }
 
-  val classDiagramSettings: Seq[Def.Setting[_]] = Seq(
-    classNames := Tests.allDefs((compile in Compile).value).collect{
+  override val projectSettings: Seq[Def.Setting[_]] = Seq(
+    classDiagramClassNames := Tests.allDefs((compile in Compile).value).collect{
       case c: ClassLike => ClassNode.decodeClassName(c.name)
     },
     // can't use := and .value
     // https://github.com/sbt/sbt/issues/1444
-    classNames <<= classNames storeAs classNames triggeredBy (compile in Compile),
-    fileName := fileName.?.value.getOrElse("classDiagram.svg"),
+    classDiagramClassNames <<= classDiagramClassNames storeAs classDiagramClassNames triggeredBy (compile in Compile),
+    classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
     classDiagram := {
       val svg = writeSVGTask.evaluated
       java.awt.Desktop.getDesktop.open(svg)

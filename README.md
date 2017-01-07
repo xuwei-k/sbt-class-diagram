@@ -3,14 +3,14 @@
 ### requirement
 
 - <http://www.graphviz.org/>
-- sbt 0.13.x
+- sbt 0.13.5 or higher
 
 ### install
 
 #### `build.sbt`
 
 ```scala
-classDiagramSettings
+enablePlugins(ClassDiagramPlugin)
 ```
 
 #### `project/plugin.sbt`
