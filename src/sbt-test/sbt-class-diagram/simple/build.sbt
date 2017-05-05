@@ -1,8 +1,8 @@
 enablePlugins(ClassDiagramPlugin)
 
-val scalazVersion = "7.2.8"
+val scalazVersion = "7.2.12"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.11"
 
 libraryDependencies += "org.scalaz" %% "scalaz-core" % scalazVersion
 
