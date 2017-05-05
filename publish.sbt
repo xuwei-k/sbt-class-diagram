@@ -8,7 +8,7 @@ Sonatype.sonatypeSettings
 val sonatypeURL =
 "https://oss.sonatype.org/service/local/repositories/"
 
-val updateReadme = { state: State =>
+val updateReadme: State => State = { state: State =>
   val extracted = Project.extract(state)
   val scalaV = extracted get scalaBinaryVersion
   val sbtV = extracted get sbtBinaryVersion
@@ -56,7 +56,7 @@ releaseProcess := Seq[ReleaseStep](
   setNextVersion,
   commitNextVersion,
   updateReadmeProcess,
-  releaseStepCross(Sonatype.SonatypeKeys.sonatypeReleaseAll),
+  releaseStepCommand("sonatypeReleaseAll"),
   pushChanges
 )
 
