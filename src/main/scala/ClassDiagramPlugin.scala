@@ -21,8 +21,7 @@ object ClassDiagramPlugin extends AutoPlugin {
   }
 
   import autoImport._
-  import sbinary.DefaultProtocol._
-  import sbt.Cache.seqFormat
+  import Serialization.Implicits._
 
   private[this] val defaultParser: Parser[Seq[String]] =
     (Space ~> token(StringBasic, "<class name>")).*
@@ -33,14 +32,18 @@ object ClassDiagramPlugin extends AutoPlugin {
        (state, classes) => classes.fold(defaultParser)(createParser)
       )
     ){
-      Def.task{ classes0: Seq[String] =>
-        val classes = classes0.map(
-          _.split('.').map(NameTransformer.encode).mkString(".")
-        )
+      Def.task{
         val loader = (testLoader in Test).value
-        val clazz = loader.loadClass(classes.head)
-        val dot = Diagram.dot(loader, classes.toList, classDiagramSetting.value)
-        f(dot)
+        val diagramSetting = classDiagramSetting.value
+
+        (classes0: Seq[String]) => {
+          val classes = classes0.map(
+            _.split('.').map(NameTransformer.encode).mkString(".")
+          )
+          val clazz = loader.loadClass(classes.head)
+          val dot = Diagram.dot(loader, classes.toList, diagramSetting)
+          f(dot)
+        }
       }
     }
 
@@ -59,9 +62,7 @@ object ClassDiagramPlugin extends AutoPlugin {
     classDiagramClassNames := Tests.allDefs((compile in Compile).value).collect{
       case c: ClassLike => ClassNode.decodeClassName(c.name)
     },
-    // can't use := and .value
-    // https://github.com/sbt/sbt/issues/1444
-    classDiagramClassNames <<= classDiagramClassNames storeAs classDiagramClassNames triggeredBy (compile in Compile),
+    classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (compile in Compile)).value,
     classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
     classDiagram := {
       val svg = writeSVGTask.evaluated

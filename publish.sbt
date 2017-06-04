@@ -10,8 +10,8 @@ val sonatypeURL =
 
 val updateReadme: State => State = { state: State =>
   val extracted = Project.extract(state)
-  val scalaV = extracted get scalaBinaryVersion
-  val sbtV = extracted get sbtBinaryVersion
+  val scalaV = "2.10"
+  val sbtV = "0.13"
   val v = extracted get version
   val org =  extracted get organization
   val n = extracted get name
@@ -38,21 +38,29 @@ commands += Command.command("updateReadme")(updateReadme)
 
 val updateReadmeProcess: ReleaseStep = updateReadme
 
-def releaseStepCross[A](key: TaskKey[A]) = ReleaseStep(
-  action = state => Project.extract(state).runTask(key, state)._1,
-  enableCrossBuild = true
-)
+def crossSbtCommand(command: String): Seq[ReleaseStep] = {
+  def set(v: String) = releaseStepCommand("set sbtVersion in pluginCrossBuild := \"" + v + "\"")
+  List(
+    set("0.13.15"),
+    releaseStepCommand(command),
+    set("1.0.0-M6"),
+    releaseStepCommand(command)
+  )
+}
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
-  runClean,
-  runTest,
+  runClean
+) ++ Seq[Seq[ReleaseStep]](
+  crossSbtCommand("test"),
+  crossSbtCommand("scripted")
+).flatten ++ Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   updateReadmeProcess,
-  tagRelease,
-  releaseStepCross(PgpKeys.publishSigned),
+  tagRelease
+) ++ crossSbtCommand("publishSigned") ++ Seq[ReleaseStep](
   setNextVersion,
   commitNextVersion,
   updateReadmeProcess,

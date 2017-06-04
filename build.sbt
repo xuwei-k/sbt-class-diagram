@@ -51,3 +51,11 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
 
 fullResolvers ~= {_.filterNot(_.name == "jcenter")}
+
+unmanagedSourceDirectories in Compile ++= {
+  if((sbtBinaryVersion in pluginCrossBuild).value.startsWith("1.0.")) {
+    ((scalaSource in Compile).value.getParentFile / "scala-sbt-1.0") :: Nil
+  } else {
+    Nil
+  }
+}

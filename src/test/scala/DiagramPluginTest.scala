@@ -14,6 +14,7 @@ final class DiagramPluginTest {
     val methods = clazz.getDeclaredMethods
     def methodNames = methods.map(_.getName).toList
     val method = methods.find(_.getName endsWith methodName).getOrElse(sys.error("not found " + methodName + " in " + methodNames))
+    method.setAccessible(true)
     method.invoke(obj, classes).asInstanceOf[Parser[Seq[String]]]
   }
 

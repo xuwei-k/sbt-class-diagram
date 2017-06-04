@@ -2,8 +2,9 @@ language: scala
 
 script:
   - sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
+  - sed -i -e 's/$ pause//g' ./src/sbt-test/sbt-class-diagram/simple/test
   - cat ./src/sbt-test/sbt-class-diagram/simple/test
-  - sbt test scripted $(if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then echo "publish"; fi)
+  - sbt "^^ ${SBT_VERSION}" test scripted $(if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then echo "publish"; fi)
 
 sudo: false
 
@@ -19,6 +20,10 @@ env:
 
 matrix:
   include:
+  - env: SBT_VERSION="0.13.15"
+    jdk: oraclejdk7
+  - env: SBT_VERSION="1.0.0-M6"
+    jdk: oraclejdk8
   - dist: trusty
     group: edge
     sudo: required
@@ -34,7 +39,6 @@ matrix:
     - mkdir -p $HOME/.sbt/0.13/java9-rt-ext; java -jar target/java9-rt-export-*.jar $HOME/.sbt/0.13/java9-rt-ext/rt.jar
     - jar tf $HOME/.sbt/0.13/java9-rt-ext/rt.jar | grep java/lang/Object
     - cd ..
-    - echo "sbt.version=0.13.15" > project/build.properties
     - sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
     - wget https://raw.githubusercontent.com/paulp/sbt-extras/3ba0e52f32d32c0454ec3a926caae2db0caaca12/sbt && chmod +x sbt
     - ./sbt -Dscala.ext.dirs=$HOME/.sbt/0.13/java9-rt-ext test scripted
