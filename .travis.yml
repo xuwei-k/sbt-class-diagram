@@ -12,6 +12,7 @@ addons:
   apt:
     packages:
     - graphviz
+    - oracle-java8-installer
 
 env:
   global:
