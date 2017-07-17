@@ -25,25 +25,3 @@ matrix:
     jdk: oraclejdk7
   - env: SBT_VERSION="1.0.0-M6"
     jdk: oraclejdk8
-  - dist: trusty
-    group: edge
-    sudo: required
-    jdk: oraclejdk9
-    addons:
-      apt:
-        packages:
-        - oracle-java9-installer
-    script:
-    # https://github.com/sbt/sbt/pull/2951
-    - git clone https://github.com/retronym/java9-rt-export
-    - cd java9-rt-export/
-    - git checkout 1019a2873d057dd7214f4135e84283695728395d
-    - jdk_switcher use oraclejdk8
-    - sbt package
-    - jdk_switcher use oraclejdk9
-    - mkdir -p $HOME/.sbt/0.13/java9-rt-ext; java -jar target/java9-rt-export-*.jar $HOME/.sbt/0.13/java9-rt-ext/rt.jar
-    - jar tf $HOME/.sbt/0.13/java9-rt-ext/rt.jar | grep java/lang/Object
-    - cd ..
-    - sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
-    - wget https://raw.githubusercontent.com/paulp/sbt-extras/3ba0e52f32d32c0454ec3a926caae2db0caaca12/sbt && chmod +x sbt
-    - ./sbt -Dscala.ext.dirs=$HOME/.sbt/0.13/java9-rt-ext test scripted
