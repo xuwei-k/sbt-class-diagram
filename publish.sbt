@@ -43,7 +43,7 @@ def crossSbtCommand(command: String): Seq[ReleaseStep] = {
   List(
     set("0.13.15"),
     releaseStepCommand(command),
-    set("1.0.0-M6"),
+    set("1.0.0-RC2"),
     releaseStepCommand(command)
   )
 }
