@@ -41,7 +41,7 @@ val updateReadmeProcess: ReleaseStep = updateReadme
 def crossSbtCommand(command: String): Seq[ReleaseStep] = {
   def set(v: String) = releaseStepCommand("set sbtVersion in pluginCrossBuild := \"" + v + "\"")
   List(
-    set("0.13.15"),
+    set("0.13.16"),
     releaseStepCommand(command),
     set("1.0.0-RC3"),
     releaseStepCommand(command)
