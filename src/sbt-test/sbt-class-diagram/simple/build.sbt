@@ -1,6 +1,6 @@
 enablePlugins(ClassDiagramPlugin)
 
-val scalazVersion = "7.2.12"
+val scalazVersion = "7.2.16"
 
 scalaVersion := "2.11.11"
 
@@ -18,6 +18,9 @@ def urlMap(clazz: Class[_]): Map[String, String] =
 classDiagramSetting ~= { s =>
   s.copy(
     nodeSetting = clazz => s.nodeSetting(clazz) ++ urlMap(clazz),
+    filter = { clazz =>
+      clazz != classOf[java.lang.Object] && !clazz.getName.endsWith("Parent")
+    },
     commonNodeSetting = s.commonNodeSetting + ("target" -> "_blank")
   )
 }
