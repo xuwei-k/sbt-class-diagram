@@ -5,6 +5,13 @@ import xerial.sbt.Sonatype
 
 Sonatype.sonatypeSettings
 
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
+
 val sonatypeURL =
 "https://oss.sonatype.org/service/local/repositories/"
 
