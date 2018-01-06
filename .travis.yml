@@ -25,3 +25,5 @@ matrix:
     jdk: openjdk7
   - env: SBT_VERSION="1.0.4"
     jdk: oraclejdk8
+  - env: SBT_VERSION="1.1.0"
+    jdk: oraclejdk8
