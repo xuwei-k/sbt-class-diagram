@@ -3,6 +3,8 @@ import sbtrelease.ReleaseStateTransformations._
 import com.typesafe.sbt.pgp.PgpKeys
 import xerial.sbt.Sonatype
 
+crossSbtVersions := Seq("0.13.16", "1.1.0")
+
 Sonatype.sonatypeSettings
 
 publishTo := Some(
@@ -45,29 +47,17 @@ commands += Command.command("updateReadme")(updateReadme)
 
 val updateReadmeProcess: ReleaseStep = updateReadme
 
-def crossSbtCommand(command: String): Seq[ReleaseStep] = {
-  def set(v: String) = releaseStepCommand("set sbtVersion in pluginCrossBuild := \"" + v + "\"")
-  List(
-    set("0.13.16"),
-    releaseStepCommand(command),
-    set("1.0.4"),
-    releaseStepCommand(command)
-  )
-}
-
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
-  runClean
-) ++ Seq[Seq[ReleaseStep]](
-  crossSbtCommand("test"),
-  crossSbtCommand("scripted")
-).flatten ++ Seq[ReleaseStep](
+  runClean,
+  releaseStepCommandAndRemaining("^ test"),
+  releaseStepCommandAndRemaining("^ scripted"),
   setReleaseVersion,
   commitReleaseVersion,
   updateReadmeProcess,
-  tagRelease
-) ++ crossSbtCommand("publishSigned") ++ Seq[ReleaseStep](
+  tagRelease,
+  releaseStepCommandAndRemaining("^ publishSigned"),
   setNextVersion,
   commitNextVersion,
   updateReadmeProcess,
