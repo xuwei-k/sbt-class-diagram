@@ -1,8 +1,8 @@
-# sbt-class-diagram [![Build Status](https://secure.travis-ci.org/xuwei-k/sbt-class-diagram.png?branch=master)](http://travis-ci.org/xuwei-k/sbt-class-diagram)
+# sbt-class-diagram [![Build Status](https://secure.travis-ci.org/xuwei-k/sbt-class-diagram.png?branch=master)](https://travis-ci.org/xuwei-k/sbt-class-diagram)
 
 ### requirement
 
-- <http://www.graphviz.org/>
+- <https://www.graphviz.org/>
 - sbt 0.13.5 or higher
 
 ### install
@@ -38,4 +38,4 @@ addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.2.2-SNAPSHOT")
 
 #### scalaz 7.2.x
 
-[![Scalaz](http://xuwei-k.github.io/scalaz-docs/diagram1.svg)](http://xuwei-k.github.io/scalaz-docs/diagram1.svg)
+[![Scalaz](https://xuwei-k.github.io/scalaz-docs/diagram1.svg)](https://xuwei-k.github.io/scalaz-docs/diagram1.svg)

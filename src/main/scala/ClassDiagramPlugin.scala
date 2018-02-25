@@ -17,7 +17,7 @@ object ClassDiagramPlugin extends AutoPlugin {
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
     val classDiagramFileName = SettingKey[String]("classDiagramFileName", "svg file name")
     val classDiagramClassNames = TaskKey[Seq[String]]("classDiagramClassNames")
-    val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting", "http://www.graphviz.org/pdf/dotguide.pdf")
+    val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting", "https://www.graphviz.org/pdf/dotguide.pdf")
   }
 
   import autoImport._
