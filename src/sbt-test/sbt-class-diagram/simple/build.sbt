@@ -1,6 +1,6 @@
 enablePlugins(ClassDiagramPlugin)
 
-val scalazVersion = "7.2.20"
+val scalazVersion = "7.2.25"
 
 scalaVersion := "2.11.12"
 
