@@ -1,13 +1,13 @@
-scalacOptions ++= Seq("-deprecation", "-Xlint", "-unchecked", "-language:_")
+scalacOptions ++= Seq("-deprecation", "-unchecked", "-language:_")
 
-libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
+libraryDependencies += "org.scala-sbt" %% "scripted-plugin" % sbtVersion.value
 
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.1")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.2")
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.5")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.10")
 
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.3")
 
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.7.0")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.9.0")
 
 fullResolvers ~= {_.filterNot(_.name == "jcenter")}

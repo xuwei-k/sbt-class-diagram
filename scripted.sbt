@@ -1,6 +1,6 @@
-ScriptedPlugin.scriptedSettings
+enablePlugins(ScriptedPlugin)
 
-ScriptedPlugin.scriptedBufferLog := false
+scriptedBufferLog := false
 
 val javaVmArgs: List[String] = {
   import scala.collection.JavaConverters._

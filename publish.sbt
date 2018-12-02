@@ -3,7 +3,7 @@ import sbtrelease.ReleaseStateTransformations._
 import com.typesafe.sbt.pgp.PgpKeys
 import xerial.sbt.Sonatype
 
-crossSbtVersions := Seq("0.13.17", "1.1.1")
+crossSbtVersions := Seq("0.13.18", "1.2.7")
 
 Sonatype.sonatypeSettings
 
@@ -38,8 +38,8 @@ val updateReadme: State => State = { state: State =>
   IO.write(readmeFile, newReadme)
   val git = new Git(extracted get baseDirectory)
   git.add(readme) ! state.log
-  git.commit(message = "update " + readme, sign = false) ! state.log
-  "git diff HEAD^" ! state.log
+  git.commit(message = "update " + readme, sign = false, signOff = false) ! state.log
+  sys.process.Process("git diff HEAD^") ! state.log
   state
 }
 
