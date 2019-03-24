@@ -4,7 +4,7 @@ script:
   - sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
   - sed -i -e 's/$ pause//g' ./src/sbt-test/sbt-class-diagram/simple/test
   - cat ./src/sbt-test/sbt-class-diagram/simple/test
-  - sbt "^^ ${SBT_VERSION}" test scripted $(if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then echo "publish"; fi)
+  - sbt "^^ ${SBT_VERSION}" test scripted
 
 sudo: false
 
@@ -14,11 +14,6 @@ addons:
   apt:
     packages:
     - graphviz
-
-env:
-  global:
-  - secure: "nvcNVjKz04i63Jc9N9AoebWdXJFUmDk6uqgrlJMxOEzu3mPyAE/6d8L5R9ZM50MDfu/pc362MkuC17G4wQzLXJvidaWNuts468E9YU1ITdgqiT00kUTj7Ee39ABYaudFujeKUVkYkr92W88BTu6Xz6fPllTerKuLo8VWdEFzVnLObxCIpDx4JsNFhntmAHDMk0/9LHE8dbcuQFONUZPS0hOezWgFcfZyl391T1ajrwgMAqgwVZYl8e+BsG6YBKlsQ4BhoOagbhje8kxehD0KoYhj/CuQWOcXXzAHd7T60Ia5vLA5BHLYZhLqtZwjm+f7xyz/FqkdxQ19M+Ugy+oBCIPSj6AP1c6wkiAUw5Arg3GIwfqd9EdcyagUBoIaU4gyXNAyVHOlSuJx894KqHr4+2b+HTHP+tXkYYHfyot+CSfa5V6NPY/wZ5vb/W7JEF5ttwqvyRerybgACyK/v9zrA25UpA1rXYMZKhWrYXPQm0gJFzfUjXlyGttqdFYaX6Y+P/osR5wkyQxrABM7lCukCAr8ruAB2FheTJ4PHxjlUT8bP0Ho3fsF3n0zmbDvcPtU5TUAN9iXZ+YvfPy++VSjCvqZNfjQhNhcUN3R++6ty+plX2gZelrtCqnIvst2dtT9V2tMo7hkHwGYmrrSrDGPBskuBdYxQ2y1bz1ccl8NE88="
-  - secure: "SFiL0pqV8aBCJtR73ZmeyubhoiVB9AlJTjyjjo2aiguCa1E6BLRyGD/DNrVAu/bv/ahyi7rQdELc3nwdzs2Vbh4+9HU3UL4QXCybD2IgghqjUGkUfaRySWg763hh/B+lYgeKK3ehnDlQirBQTve52zWLKiQbQocNuFF51FdIXmPYzUWMsZAyfFWHtjMDdgbfZuwZeFMeTG2vaBCWeMAsGG9+Znuj5jn043kLH2SxK1i/w2yr2VFNohsSFxvQf09fDHzhV7Pt7Obxm8FEY6DnUWYIGMvhX++dZo+poykA21X+oZu8D0w6oxX644F69Tkef+/xZWoIGiTD86na1leskC740zG4Tp8cBIshmxc1e26x9vuCu0Il2olVVHDshGNxAS3pmMDKO/f9AsT/Vtnnay08eToYybSSnm/mzBvfaDqWlDn+RwdFvfdMqxa5ERN4zfnPU8sNhte8xCu1SoRSFNecFSv7Jr8dJmkQDbRpvBr2gn/6t4s18G9n2Hm0JcPHa4a3Q0XBuAPyd9Y82Ux3S3Um+HDYhNq9pjUiefGtQf8e+lcS790NQzdAklVFrU4jjX2piyeAa6y6RdzMlltV3nyDvnIrYqf8FPMslGDUvEYsa0xinOoWMfzHH1qcOhvAY+mhIvdve6QBxQH2Fr0Z5mkHpHaYIsWxCmEasSkREk4="
 
 matrix:
   include:
