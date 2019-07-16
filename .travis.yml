@@ -19,4 +19,4 @@ matrix:
   include:
   - env: SBT_VERSION="0.13.18"
   - env: SBT_VERSION="1.0.4"
-  - env: SBT_VERSION="1.2.7"
+  - env: SBT_VERSION="1.2.8"
