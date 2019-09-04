@@ -3,7 +3,7 @@ import sbtrelease.ReleaseStateTransformations._
 import com.typesafe.sbt.pgp.PgpKeys
 import xerial.sbt.Sonatype
 
-crossSbtVersions := Seq("0.13.18", "1.2.8")
+crossSbtVersions += "0.13.18"
 
 Sonatype.sonatypeSettings
 
