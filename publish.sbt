@@ -3,7 +3,9 @@ import sbtrelease.ReleaseStateTransformations._
 import com.typesafe.sbt.pgp.PgpKeys
 import xerial.sbt.Sonatype
 
-crossSbtVersions += "0.13.18"
+// Don't update to sbt 1.3.x
+// https://github.com/sbt/sbt/issues/5049
+crossSbtVersions := Seq("0.13.18", "1.2.8")
 
 Sonatype.sonatypeSettings
 
