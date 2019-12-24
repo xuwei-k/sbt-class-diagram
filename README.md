@@ -13,7 +13,7 @@
 enablePlugins(ClassDiagramPlugin)
 ```
 
-#### `project/plugin.sbt`
+#### `project/plugins.sbt`
 
 ##### latest stable version
 
