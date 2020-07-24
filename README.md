@@ -1,4 +1,4 @@
-# sbt-class-diagram [![Build Status](https://secure.travis-ci.org/xuwei-k/sbt-class-diagram.png?branch=master)](https://travis-ci.org/xuwei-k/sbt-class-diagram)
+# sbt-class-diagram [![Build Status](https://travis-ci.com/xuwei-k/sbt-class-diagram.png?branch=master)](https://travis-ci.com/xuwei-k/sbt-class-diagram)
 
 ### requirement
 
