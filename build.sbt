@@ -6,6 +6,8 @@ organization := "com.github.xuwei-k"
 
 startYear := Some(2014)
 
+scriptedBatchExecution := false
+
 scalacOptions ++= (
   "-deprecation" ::
   "-unchecked" ::
