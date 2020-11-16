@@ -1,0 +1,33 @@
+name: CI
+on:
+  pull_request:
+  push:
+  schedule:
+  - cron: '0 19 * * 2'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - java: 8
+            sbt_version: "0.13.18"
+          - java: 8
+            sbt_version: "1.2.8"
+          - java: 8
+            sbt_version: "1.3.13"
+          - java: 8
+          - java: 11
+    steps:
+    - uses: actions/checkout@v1
+    - uses: olafurpg/setup-scala@v10
+      with:
+        java-version: "adopt@1.${{ matrix.java }}"
+    - uses: coursier/cache-action@v5
+    - run: sudo apt-get update
+    - run: sudo apt-get install graphviz
+    - run: sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
+    - run: sed -i -e 's/$ pause//g' ./src/sbt-test/sbt-class-diagram/simple/test
+    - run: cat ./src/sbt-test/sbt-class-diagram/simple/test
+    - run: sbt -v $(if [[ "${{matrix.sbt_version}}" != "" ]] ; then echo "^^${{matrix.sbt_version}}" ; fi) test scripted
