@@ -1,6 +1,6 @@
 import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
-import com.typesafe.sbt.pgp.PgpKeys
+import com.jsuereth.sbtpgp.PgpKeys
 import xerial.sbt.Sonatype
 
 // Don't update to sbt 1.3.x
