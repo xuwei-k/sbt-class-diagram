@@ -24,7 +24,7 @@ jobs:
     - uses: olafurpg/setup-scala@v10
       with:
         java-version: "adopt@1.${{ matrix.java }}"
-    - uses: coursier/cache-action@v5
+    - uses: coursier/cache-action@v6
     - run: sudo apt-get update
     - run: sudo apt-get install graphviz
     - run: sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
