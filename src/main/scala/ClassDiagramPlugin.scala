@@ -33,7 +33,7 @@ object ClassDiagramPlugin extends AutoPlugin {
       )
     ){
       Def.task{
-        val loader = (testLoader in Test).value
+        val loader = (Test / testLoader).value
         val diagramSetting = classDiagramSetting.value
 
         (classes0: Seq[String]) => {
@@ -59,10 +59,10 @@ object ClassDiagramPlugin extends AutoPlugin {
   }
 
   override val projectSettings: Seq[Def.Setting[_]] = Seq(
-    classDiagramClassNames := Tests.allDefs((compile in Compile).value).collect{
+    classDiagramClassNames := Tests.allDefs((Compile / compile).value).collect{
       case c: ClassLike => ClassNode.decodeClassName(c.name)
     },
-    classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (compile in Compile)).value,
+    classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (Compile / compile)).value,
     classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
     classDiagram := {
       val svg = writeSVGTask.evaluated

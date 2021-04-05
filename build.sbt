@@ -23,7 +23,7 @@ watchSources ++= sbtTestDirectory.value.allPaths.get
 
 def gitHash: String = sys.process.Process("git rev-parse HEAD").lineStream_!.head
 
-scalacOptions in (Compile, doc) ++= {
+Compile / doc / scalacOptions ++= {
   val tag = if(isSnapshot.value) gitHash else { "v" + version.value }
   Seq(
     "-sourcepath", baseDirectory.value.getAbsolutePath,
@@ -54,9 +54,9 @@ testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
 
 fullResolvers ~= {_.filterNot(_.name == "jcenter")}
 
-unmanagedSourceDirectories in Compile ++= {
-  if((sbtBinaryVersion in pluginCrossBuild).value.startsWith("1.0.")) {
-    ((scalaSource in Compile).value.getParentFile / "scala-sbt-1.0") :: Nil
+(Compile / unmanagedSourceDirectories) ++= {
+  if((pluginCrossBuild / sbtBinaryVersion).value.startsWith("1.0.")) {
+    ((Compile / scalaSource).value.getParentFile / "scala-sbt-1.0") :: Nil
   } else {
     Nil
   }
