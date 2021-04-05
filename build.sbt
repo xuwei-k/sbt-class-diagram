@@ -8,6 +8,8 @@ startYear := Some(2014)
 
 scriptedBatchExecution := false
 
+Test / fork := true
+
 scalacOptions ++= (
   "-deprecation" ::
   "-unchecked" ::
