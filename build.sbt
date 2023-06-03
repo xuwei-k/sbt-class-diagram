@@ -61,3 +61,5 @@ fullResolvers ~= {_.filterNot(_.name == "jcenter")}
     Nil
   }
 }
+
+sbtPluginPublishLegacyMavenStyle := false
