@@ -62,4 +62,6 @@ fullResolvers ~= {_.filterNot(_.name == "jcenter")}
   }
 }
 
-sbtPluginPublishLegacyMavenStyle := false
+sbtPluginPublishLegacyMavenStyle := {
+  sys.env.isDefinedAt("GITHUB_ACTION") || isSnapshot.value
+}
