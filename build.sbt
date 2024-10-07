@@ -10,6 +10,15 @@ scriptedBatchExecution := false
 
 Test / fork := true
 
+Test / test := {
+  if (scalaBinaryVersion.value == "3") {
+    // https://github.com/sbt/sbt/issues/7724
+    ()
+  } else {
+    (Test / test).value
+  }
+}
+
 scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
