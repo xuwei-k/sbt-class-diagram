@@ -52,16 +52,6 @@ licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
 libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % "test"
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
 
-fullResolvers ~= {_.filterNot(_.name == "jcenter")}
-
-(Compile / unmanagedSourceDirectories) ++= {
-  if((pluginCrossBuild / sbtBinaryVersion).value.startsWith("1.0.")) {
-    ((Compile / scalaSource).value.getParentFile / "scala-sbt-1.0") :: Nil
-  } else {
-    Nil
-  }
-}
-
 sbtPluginPublishLegacyMavenStyle := {
   sys.env.isDefinedAt("GITHUB_ACTION") || isSnapshot.value
 }
