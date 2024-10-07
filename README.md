@@ -17,7 +17,7 @@ enablePlugins(ClassDiagramPlugin)
 ##### latest stable version
 
 ```scala
-addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.2.1")
+addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.3.0")
 ```
 
 ### sample
