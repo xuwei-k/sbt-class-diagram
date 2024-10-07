@@ -22,7 +22,7 @@ object ClassDiagramPlugin extends AutoPlugin {
   }
 
   import autoImport.*
-  import Serialization.Implicits.*
+  import sjsonnew.BasicJsonProtocol.*
 
   private[this] val defaultParser: Parser[Seq[String]] =
     (Space ~> token(StringBasic, "<class name>")).*
