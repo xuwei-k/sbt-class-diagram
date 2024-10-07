@@ -15,9 +15,6 @@ publishTo := Some(
     Opts.resolver.sonatypeStaging
 )
 
-val sonatypeURL =
-"https://oss.sonatype.org/service/local/repositories/"
-
 val updateReadme: State => State = { state: State =>
   val extracted = Project.extract(state)
   val v = extracted get version
