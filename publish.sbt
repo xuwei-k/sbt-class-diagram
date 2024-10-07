@@ -2,9 +2,16 @@ import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
 import xerial.sbt.Sonatype
 
-// Don't update to sbt 1.3.x
-// https://github.com/sbt/sbt/issues/5049
-crossSbtVersions := Seq("1.2.8")
+crossScalaVersions += "3.3.4"
+
+pluginCrossBuild / sbtVersion := {
+  scalaBinaryVersion.value match {
+    case "2.12" =>
+      sbtVersion.value
+    case _ =>
+      "2.0.0-M2"
+  }
+}
 
 Sonatype.sonatypeSettings
 
@@ -48,13 +55,13 @@ releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
-  releaseStepCommandAndRemaining("^ test"),
-  releaseStepCommandAndRemaining("^ scripted"),
+  releaseStepCommandAndRemaining("+ test"),
+  releaseStepCommandAndRemaining("+ scripted"),
   setReleaseVersion,
   commitReleaseVersion,
   updateReadmeProcess,
   tagRelease,
-  releaseStepCommandAndRemaining("^ publishSigned"),
+  releaseStepCommandAndRemaining("+ publishSigned"),
   setNextVersion,
   commitNextVersion,
   updateReadmeProcess,

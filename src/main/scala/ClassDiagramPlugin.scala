@@ -1,7 +1,7 @@
 package diagram
 
 import sbt.Keys.*
-import sbt.*
+import sbt.{given, *}
 import sbt.complete.DefaultParsers.*
 import sbt.complete.Parser
 import xsbti.api.ClassLike
