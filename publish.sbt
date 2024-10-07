@@ -15,12 +15,7 @@ pluginCrossBuild / sbtVersion := {
 
 Sonatype.sonatypeSettings
 
-publishTo := Some(
-  if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
-  else
-    Opts.resolver.sonatypeStaging
-)
+publishTo := sonatypePublishToBundle.value
 
 val updateReadme: State => State = { state: State =>
   val extracted = Project.extract(state)
@@ -58,14 +53,13 @@ releaseProcess := Seq[ReleaseStep](
   releaseStepCommandAndRemaining("+ test"),
   releaseStepCommandAndRemaining("+ scripted"),
   setReleaseVersion,
-  commitReleaseVersion,
   updateReadmeProcess,
+  commitReleaseVersion,
   tagRelease,
   releaseStepCommandAndRemaining("+ publishSigned"),
+  releaseStepCommandAndRemaining("sonatypeBundleRelease"),
   setNextVersion,
   commitNextVersion,
-  updateReadmeProcess,
-  releaseStepCommand("sonatypeReleaseAll"),
   pushChanges
 )
 
