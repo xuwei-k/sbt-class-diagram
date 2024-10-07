@@ -31,4 +31,8 @@ jobs:
     - run: sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
     - run: sed -i -e 's/$ pause//g' ./src/sbt-test/sbt-class-diagram/simple/test
     - run: cat ./src/sbt-test/sbt-class-diagram/simple/test
-    - run: sbt -v $(if [[ "${{matrix.sbt_version}}" != "" ]] ; then echo "^^${{matrix.sbt_version}}" ; fi) test scripted
+    - run: sbt -v $(if [[ "${{matrix.sbt_version}}" != "" ]] ; then echo "^^${{matrix.sbt_version}}" ; fi)
+           scalafmtSbtCheck
+           "+ scalafmtCheckAll"
+           test
+           scripted
