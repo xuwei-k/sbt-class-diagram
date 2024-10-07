@@ -13,7 +13,8 @@ final class DiagramPluginTest {
     val methodName = "createParser"
     val methods = clazz.getDeclaredMethods
     def methodNames = methods.map(_.getName).toList
-    val method = methods.find(_.getName endsWith methodName).getOrElse(sys.error("not found " + methodName + " in " + methodNames))
+    val method =
+      methods.find(_.getName endsWith methodName).getOrElse(sys.error("not found " + methodName + " in " + methodNames))
     method.setAccessible(true)
     method.invoke(obj, classes).asInstanceOf[Parser[Seq[String]]]
   }
@@ -23,7 +24,7 @@ final class DiagramPluginTest {
     val classes = List("A", "B", "C").map("com.example." + _)
     val h :: t = Random.shuffle(classes)
     val parser = invokeParser(classes)
-    val result = (" " + h + " ").foldLeft(parser){_ derive _}.completions(0).get.map(_.display)
+    val result = (" " + h + " ").foldLeft(parser) { _ derive _ }.completions(0).get.map(_.display)
     assertEquals(result, t.toSet)
   }
 

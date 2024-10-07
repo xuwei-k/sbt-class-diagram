@@ -4,7 +4,7 @@ import Reflect.getAllClassAndTrait
 
 import scala.reflect.NameTransformer
 
-final case class ClassNode(clazz: Class[_], parents: List[Class[_]]) {
+final case class ClassNode(clazz: Class[?], parents: List[Class[?]]) {
   lazy val allParents = getAllClassAndTrait(this.clazz)
 
   private lazy val fullName = clazz.getName
@@ -19,11 +19,11 @@ object ClassNode {
   def dot(allClassNodes: List[ClassNode], setting: DiagramSetting): String = {
     val quote = "\"" + (_: String) + "\""
     val map2string = { (map: Map[String, String]) =>
-      if(map.isEmpty) ""
-      else map.map { case (k, v) => k + "=" + quote(v)}.mkString(" [", ", ", "]")
+      if (map.isEmpty) ""
+      else map.map { case (k, v) => k + "=" + quote(v) }.mkString(" [", ", ", "]")
     }
 
-    val nodes = allClassNodes.map{ n =>
+    val nodes = allClassNodes.map { n =>
       quote(n.fullNameDecoded) + map2string(setting.nodeSetting(n.clazz))
     }.sorted
     val edges = for {

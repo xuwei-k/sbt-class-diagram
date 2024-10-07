@@ -1,8 +1,8 @@
 package diagram
 
-import sbt.Keys._
-import sbt._
-import sbt.complete.DefaultParsers._
+import sbt.Keys.*
+import sbt.*
+import sbt.complete.DefaultParsers.*
 import sbt.complete.Parser
 import xsbti.api.ClassLike
 
@@ -17,22 +17,21 @@ object ClassDiagramPlugin extends AutoPlugin {
     val classDiagramWrite = InputKey[File]("classDiagramWrite", "write svg file")
     val classDiagramFileName = SettingKey[String]("classDiagramFileName", "svg file name")
     val classDiagramClassNames = TaskKey[Seq[String]]("classDiagramClassNames")
-    val classDiagramSetting = SettingKey[DiagramSetting]("classDiagramSetting", "https://www.graphviz.org/pdf/dotguide.pdf")
+    val classDiagramSetting =
+      SettingKey[DiagramSetting]("classDiagramSetting", "https://www.graphviz.org/pdf/dotguide.pdf")
   }
 
-  import autoImport._
-  import Serialization.Implicits._
+  import autoImport.*
+  import Serialization.Implicits.*
 
   private[this] val defaultParser: Parser[Seq[String]] =
     (Space ~> token(StringBasic, "<class name>")).*
 
   private[this] def dotTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
     InputTask.createDyn(
-      Defaults.loadForParser(classDiagramClassNames)(
-       (state, classes) => classes.fold(defaultParser)(createParser)
-      )
-    ){
-      Def.task{
+      Defaults.loadForParser(classDiagramClassNames)((state, classes) => classes.fold(defaultParser)(createParser))
+    ) {
+      Def.task {
         val loader = (Test / testLoader).value
         val diagramSetting = classDiagramSetting.value
 
@@ -50,17 +49,17 @@ object ClassDiagramPlugin extends AutoPlugin {
   private[this] def svgTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
     dotTask(dot => f(Diagram.dot2svg(dot)))
 
-  private[this] val writeSVGTask = svgTask{ svg =>
-    Def.task{
+  private[this] val writeSVGTask = svgTask { svg =>
+    Def.task {
       val svgFile = Keys.target.value / classDiagramFileName.value
       IO.writeLines(svgFile, svg :: Nil)
       svgFile
     }
   }
 
-  override val projectSettings: Seq[Def.Setting[_]] = Seq(
-    classDiagramClassNames := Tests.allDefs((Compile / compile).value).collect{
-      case c: ClassLike => ClassNode.decodeClassName(c.name)
+  override val projectSettings: Seq[Def.Setting[?]] = Seq(
+    classDiagramClassNames := Tests.allDefs((Compile / compile).value).collect { case c: ClassLike =>
+      ClassNode.decodeClassName(c.name)
     },
     classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (Compile / compile)).value,
     classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
@@ -69,12 +68,12 @@ object ClassDiagramPlugin extends AutoPlugin {
       java.awt.Desktop.getDesktop.open(svg)
       svg
     },
-    classDiagramSetting := classDiagramSetting.?.value.getOrElse{
+    classDiagramSetting := classDiagramSetting.?.value.getOrElse {
       DiagramSetting(
         name = "diagram",
         commonNodeSetting = Map("shape" -> "record", "style" -> "filled"),
         commonEdgeSetting = Map("arrowtail" -> "none"),
-        nodeSetting = clazz => Map("fillcolor" -> {if(clazz.isInterface) "#799F5A" else "#7996AC"}),
+        nodeSetting = clazz => Map("fillcolor" -> { if (clazz.isInterface) "#799F5A" else "#7996AC" }),
         edgeSetting = (_, _) => Map.empty,
         filter = _ != classOf[java.lang.Object]
       )
@@ -101,4 +100,3 @@ object ClassDiagramPlugin extends AutoPlugin {
     } ?? Nil
   }
 }
-

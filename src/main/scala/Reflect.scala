@@ -2,10 +2,10 @@ package diagram
 
 object Reflect {
 
-  private def getSuperClasses(clazz: Class[_]): List[Class[_]] = {
+  private def getSuperClasses(clazz: Class[?]): List[Class[?]] = {
 
     @scala.annotation.tailrec
-    def loop(o: Class[_], result: List[Class[_]]): List[Class[_]] = {
+    def loop(o: Class[?], result: List[Class[?]]): List[Class[?]] = {
       val superClass = o.getSuperclass
       if (superClass == null) {
         result
@@ -17,9 +17,9 @@ object Reflect {
     loop(clazz, List(clazz))
   }
 
-  def getAllClassAndTrait(classes: Class[_]*): List[Class[_]] = {
+  def getAllClassAndTrait(classes: Class[?]*): List[Class[?]] = {
 
-    def loop(c: Class[_], result: List[Class[_]]): List[Class[_]] = {
+    def loop(c: Class[?], result: List[Class[?]]): List[Class[?]] = {
       val interfaces = c.getInterfaces.toList
 
       if (interfaces.size == 0) {
