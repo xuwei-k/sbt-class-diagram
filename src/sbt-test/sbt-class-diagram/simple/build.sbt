@@ -4,7 +4,7 @@ val scalazVersion = "7.3.8"
 
 libraryDependencies += "org.scalaz" %% "scalaz-core" % scalazVersion
 
-def urlMap(clazz: Class[_]): Map[String, String] =
+def urlMap(clazz: Class[?]): Map[String, String] =
   if (clazz.getName.startsWith("scalaz"))
     Map(
       "href" -> s"https://github.com/scalaz/scalaz/tree/v${scalazVersion}/core/src/main/scala/${clazz.getName.replace('.', '/')}.scala",
