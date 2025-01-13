@@ -24,6 +24,7 @@ jobs:
         java-version: "${{ matrix.java }}"
         distribution: temurin
     - uses: coursier/cache-action@v6
+    - uses: sbt/setup-sbt@v1
     - run: sudo apt-get update
     - run: sudo apt-get install graphviz
     - run: sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
