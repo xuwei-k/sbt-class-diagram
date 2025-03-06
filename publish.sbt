@@ -2,7 +2,7 @@ import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
 import xerial.sbt.Sonatype
 
-crossScalaVersions += "3.6.3"
+crossScalaVersions += "3.6.4"
 
 pluginCrossBuild / sbtVersion := {
   scalaBinaryVersion.value match {
