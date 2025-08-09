@@ -1,5 +1,6 @@
 package diagram
 
+import diagram.Compat.*
 import sbt.Keys.*
 import sbt.{given, *}
 import sbt.complete.DefaultParsers.*
@@ -58,9 +59,11 @@ object ClassDiagramPlugin extends AutoPlugin {
   }
 
   override val projectSettings: Seq[Def.Setting[?]] = Seq(
-    classDiagramClassNames := Tests.allDefs((Compile / compile).value).collect { case c: ClassLike =>
-      ClassNode.decodeClassName(c.name)
-    },
+    classDiagramClassNames := Def.uncached(
+      Tests.allDefs((Compile / compile).value).collect { case c: ClassLike =>
+        ClassNode.decodeClassName(c.name)
+      }
+    ),
     classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (Compile / compile)).value,
     classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
     classDiagram := {
