@@ -1,6 +1,5 @@
 import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
-import xerial.sbt.Sonatype
 
 crossScalaVersions += "3.7.2"
 
@@ -13,9 +12,7 @@ pluginCrossBuild / sbtVersion := {
   }
 }
 
-Sonatype.sonatypeSettings
-
-publishTo := sonatypePublishToBundle.value
+publishTo := (if (isSnapshot.value) None else localStaging.value)
 
 val updateReadme: State => State = { state: State =>
   val extracted = Project.extract(state)
@@ -57,7 +54,7 @@ releaseProcess := Seq[ReleaseStep](
   commitReleaseVersion,
   tagRelease,
   releaseStepCommandAndRemaining("+ publishSigned"),
-  releaseStepCommandAndRemaining("sonatypeBundleRelease"),
+  releaseStepCommandAndRemaining("sonaRelease"),
   setNextVersion,
   commitNextVersion,
   pushChanges
