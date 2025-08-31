@@ -1,4 +1,4 @@
-scalacOptions ++= Seq("-deprecation", "-unchecked", "-language:_")
+scalacOptions ++= Seq("-deprecation", "-unchecked")
 
 libraryDependencies += "org.scala-sbt" %% "scripted-plugin" % sbtVersion.value
 
