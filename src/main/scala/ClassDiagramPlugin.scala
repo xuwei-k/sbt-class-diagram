@@ -6,7 +6,6 @@ import sbt.{given, *}
 import sbt.complete.DefaultParsers.*
 import sbt.complete.Parser
 import xsbti.api.ClassLike
-
 import scala.reflect.NameTransformer
 
 object ClassDiagramPlugin extends AutoPlugin {

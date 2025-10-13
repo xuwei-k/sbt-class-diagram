@@ -1,7 +1,6 @@
 package diagram
 
 import Reflect.getAllClassAndTrait
-
 import scala.reflect.NameTransformer
 
 final case class ClassNode(clazz: Class[?], parents: List[Class[?]]) {
