@@ -13,7 +13,7 @@ jobs:
         include:
           - java: 8
             scala: "2.12"
-          - java: 8
+          - java: 17
             scala: "3"
           - java: 25
             scala: "2.12"
