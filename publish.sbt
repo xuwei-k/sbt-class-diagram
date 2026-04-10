@@ -1,14 +1,16 @@
 import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
 
-crossScalaVersions += "3.8.2"
+def sbt2 = "2.0.0-RC11"
+
+crossScalaVersions += scala_version_from_sbt_version.ScalaVersionFromSbtVersion(sbt2)
 
 pluginCrossBuild / sbtVersion := {
   scalaBinaryVersion.value match {
     case "2.12" =>
       sbtVersion.value
     case _ =>
-      "2.0.0-RC11"
+      sbt2
   }
 }
 
