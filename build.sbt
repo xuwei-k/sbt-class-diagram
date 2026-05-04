@@ -14,9 +14,19 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-language:existentials",
-  "-language:higherKinds",
   "-language:implicitConversions",
 )
+
+scalacOptions ++= {
+  scalaBinaryVersion.value match {
+    case "3" =>
+      Nil
+    case _ =>
+      Seq(
+        "-language:higherKinds",
+      )
+  }
+}
 
 watchSources ++= sbtTestDirectory.value.allPaths.get
 
