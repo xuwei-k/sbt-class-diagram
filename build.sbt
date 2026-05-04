@@ -44,18 +44,18 @@ Compile / doc / scalacOptions ++= {
 
 pomExtra := (
   <url>https://github.com/xuwei-k/sbt-class-diagram</url>
-<developers>
-  <developer>
-    <id>xuwei-k</id>
-    <name>Kenji Yoshida</name>
-    <url>https://github.com/xuwei-k</url>
-  </developer>
-</developers>
-<scm>
-  <url>git@github.com:xuwei-k/sbt-class-diagram.git</url>
-  <connection>scm:git:git@github.com:xuwei-k/sbt-class-diagram.git</connection>
-  <tag>{if (isSnapshot.value) gitHash else { "v" + version.value }}</tag>
-</scm>
+  <developers>
+    <developer>
+      <id>xuwei-k</id>
+      <name>Kenji Yoshida</name>
+      <url>https://github.com/xuwei-k</url>
+    </developer>
+  </developers>
+  <scm>
+    <url>git@github.com:xuwei-k/sbt-class-diagram.git</url>
+    <connection>scm:git:git@github.com:xuwei-k/sbt-class-diagram.git</connection>
+    <tag>{if (isSnapshot.value) gitHash else { "v" + version.value }}</tag>
+  </scm>
 )
 
 licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
