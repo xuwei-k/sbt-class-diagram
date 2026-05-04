@@ -23,9 +23,8 @@ val updateReadme: State => State = { state: State =>
   val n = extracted get name
   val readme = "README.md"
   val readmeFile = file(readme)
-  val newReadme = Predef
-    .augmentString(IO.read(readmeFile))
-    .lines
+  val newReadme = IO
+    .readLines(readmeFile)
     .map { line =>
       val matchReleaseOrSnapshot = line.contains("SNAPSHOT") == v.contains("SNAPSHOT")
       if (line.startsWith("addSbtPlugin") && matchReleaseOrSnapshot) {
