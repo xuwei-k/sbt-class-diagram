@@ -16,7 +16,7 @@ pluginCrossBuild / sbtVersion := {
 
 publishTo := (if (isSnapshot.value) None else localStaging.value)
 
-val updateReadme: State => State = { state: State =>
+val updateReadme: State => State = { state =>
   val extracted = Project.extract(state)
   val v = extracted.get(version)
   val org = extracted.get(organization)
