@@ -52,7 +52,3 @@ licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
 
 libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % "test"
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
-
-sbtPluginPublishLegacyMavenStyle := {
-  sys.env.isDefinedAt("GITHUB_ACTION") || isSnapshot.value
-}
