@@ -18,9 +18,9 @@ publishTo := (if (isSnapshot.value) None else localStaging.value)
 
 val updateReadme: State => State = { state: State =>
   val extracted = Project.extract(state)
-  val v = extracted get version
-  val org = extracted get organization
-  val n = extracted get name
+  val v = extracted.get(version)
+  val org = extracted.get(organization)
+  val n = extracted.get(name)
   val readme = "README.md"
   val readmeFile = file(readme)
   val newReadme = IO
@@ -33,7 +33,7 @@ val updateReadme: State => State = { state: State =>
     }
     .mkString("", "\n", "\n")
   IO.write(readmeFile, newReadme)
-  val git = new Git(extracted get baseDirectory)
+  val git = new Git(extracted.get(baseDirectory))
   git.add(readme) ! state.log
   git.commit(message = "update " + readme, sign = false, signOff = false) ! state.log
   sys.process.Process("git diff HEAD^") ! state.log
