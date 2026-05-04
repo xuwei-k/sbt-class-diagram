@@ -28,7 +28,7 @@ scalacOptions ++= {
   }
 }
 
-watchSources ++= sbtTestDirectory.value.allPaths.get
+watchSources ++= sbtTestDirectory.value.allPaths.get()
 
 def gitHash: String = sys.process.Process("git rev-parse HEAD").lineStream_!.head
 
