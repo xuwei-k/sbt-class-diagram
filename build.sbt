@@ -23,12 +23,14 @@ scalacOptions ++= {
       Nil
     case _ =>
       Seq(
+        "-release:8",
         "-language:higherKinds",
       )
   }
 }
 
-watchSources ++= sbtTestDirectory.value.allPaths.get()
+// https://github.com/sbt/sbt/issues/9187
+watchSources ++= Def.uncached(sbtTestDirectory.value.allPaths.get())
 
 def gitHash: String = sys.process.Process("git rev-parse HEAD").lineStream_!.head
 
