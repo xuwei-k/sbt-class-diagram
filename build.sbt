@@ -32,10 +32,10 @@ scalacOptions ++= {
 // https://github.com/sbt/sbt/issues/9187
 watchSources ++= Def.uncached(sbtTestDirectory.value.allPaths.get())
 
-def gitHash: String = sys.process.Process("git rev-parse HEAD").lineStream_!.head
+def gitHash(): String = sys.process.Process("git rev-parse HEAD").lineStream_!.head
 
-Compile / doc / scalacOptions ++= {
-  val tag = if (isSnapshot.value) gitHash else { "v" + version.value }
+Compile / doc / scalacOptions ++= Def.uncached {
+  val tag = if (isSnapshot.value) gitHash() else { "v" + version.value }
   Seq(
     "-sourcepath",
     baseDirectory.value.getAbsolutePath,
@@ -56,7 +56,7 @@ pomExtra := (
   <scm>
     <url>git@github.com:xuwei-k/sbt-class-diagram.git</url>
     <connection>scm:git:git@github.com:xuwei-k/sbt-class-diagram.git</connection>
-    <tag>{if (isSnapshot.value) gitHash else { "v" + version.value }}</tag>
+    <tag>{if (isSnapshot.value) gitHash() else { "v" + version.value }}</tag>
   </scm>
 )
 
