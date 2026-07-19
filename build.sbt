@@ -60,7 +60,7 @@ pomExtra := (
   </scm>
 )
 
-licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
+licenses := Seq("MIT" -> uri("https://opensource.org/licenses/MIT"))
 
 libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % "test"
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
