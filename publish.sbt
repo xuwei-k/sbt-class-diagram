@@ -1,7 +1,7 @@
 import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
 
-def sbt1 = "1.12.14"
+def sbt1 = "1.12.15"
 
 crossScalaVersions += scala_version_from_sbt_version.ScalaVersionFromSbtVersion(sbt1)
 
