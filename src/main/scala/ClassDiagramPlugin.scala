@@ -24,10 +24,10 @@ object ClassDiagramPlugin extends AutoPlugin {
   import autoImport.*
   import sjsonnew.BasicJsonProtocol.*
 
-  private[this] val defaultParser: Parser[Seq[String]] =
+  private val defaultParser: Parser[Seq[String]] =
     (Space ~> token(StringBasic, "<class name>")).*
 
-  private[this] def dotTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
+  private def dotTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
     InputTask.createDyn(
       Defaults.loadForParser(classDiagramClassNames)((state, classes) => classes.fold(defaultParser)(createParser))
     ) {
@@ -46,10 +46,10 @@ object ClassDiagramPlugin extends AutoPlugin {
       }
     }
 
-  private[this] def svgTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
+  private def svgTask[A](f: String => Def.Initialize[Task[A]]): Def.Initialize[InputTask[A]] =
     dotTask(dot => f(Diagram.dot2svg(dot)))
 
-  private[this] val writeSVGTask = svgTask { svg =>
+  private val writeSVGTask = svgTask { svg =>
     Def.task {
       val svgFile = Keys.target.value / classDiagramFileName.value
       IO.writeLines(svgFile, svg :: Nil)
@@ -63,7 +63,7 @@ object ClassDiagramPlugin extends AutoPlugin {
         ClassNode.decodeClassName(c.name)
       }
     ),
-    classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (Compile / compile)).value,
+    classDiagramClassNames := (classDiagramClassNames `storeAs` classDiagramClassNames `triggeredBy` (Compile / compile)).value,
     classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
     classDiagram := {
       val svg = writeSVGTask.evaluated
@@ -85,7 +85,7 @@ object ClassDiagramPlugin extends AutoPlugin {
     classDiagramWrite := writeSVGTask.evaluated
   )
 
-  private[this] def createParser(classNames: Seq[String]): Parser[Seq[String]] = {
+  private def createParser(classNames: Seq[String]): Parser[Seq[String]] = {
     classNames match {
       case Nil =>
         defaultParser
@@ -94,8 +94,8 @@ object ClassDiagramPlugin extends AutoPlugin {
     }
   }
 
-  private[this] def distinctParser(exs: Set[String]): Parser[Seq[String]] = {
-    val base = token(Space) ~> token(NotSpace examples exs)
+  private def distinctParser(exs: Set[String]): Parser[Seq[String]] = {
+    val base = token(Space) ~> token(NotSpace `examples` exs)
     base.flatMap { ex =>
       val (_, notMatching) = exs.partition(GlobFilter(ex).accept)
       distinctParser(notMatching).map { result => ex +: result }

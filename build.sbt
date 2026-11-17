@@ -23,6 +23,7 @@ scalacOptions ++= {
       Nil
     case _ =>
       Seq(
+        "-Xsource:3",
         "-release:8",
         "-language:higherKinds",
       )

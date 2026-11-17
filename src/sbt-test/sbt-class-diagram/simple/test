@@ -1,9 +1,9 @@
-> classDiagram scalaz.\/
-$ pause
+> classDiagramWrite scalaz.\/
+$ exists **/classDiagram.svg
 > show classDiagramDot scala.collection.immutable.List
-> classDiagram scala.collection.immutable.List
-$ pause
-> classDiagram scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism scalaz.Divisible scalaz.BindRec
-$ pause
-> classDiagram scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow scalaz.Associative scalaz.ProChoice
-$ pause
+> classDiagramWrite scala.collection.immutable.List
+$ exists **/classDiagram.svg
+> classDiagramWrite scalaz.MonadPlus scalaz.ComonadStore scalaz.Traverse1 scalaz.IsEmpty scalaz.MonadReader scalaz.MonadState scalaz.MonadError scalaz.MonadListen scalaz.Nondeterminism scalaz.Divisible scalaz.BindRec
+$ exists **/classDiagram.svg
+> classDiagramWrite scalaz.Enum scalaz.Bitraverse scalaz.Choice scalaz.Arrow scalaz.Associative scalaz.ProChoice
+$ exists **/classDiagram.svg

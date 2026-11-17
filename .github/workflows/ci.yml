@@ -15,6 +15,10 @@ jobs:
             scala: "2.12"
           - java: 17
             scala: "3"
+          - java: 21
+            scala: "3"
+          - java: 25
+            scala: "3"
           - java: 25
             scala: "2.12"
     steps:
@@ -27,9 +31,6 @@ jobs:
     - uses: sbt/setup-sbt@v1
     - run: sudo apt-get update
     - run: sudo apt-get install graphviz
-    - run: sed -i -e 's/classDiagram /classDiagramWrite /g' ./src/sbt-test/sbt-class-diagram/simple/test
-    - run: sed -i -e 's/$ pause//g' ./src/sbt-test/sbt-class-diagram/simple/test
-    - run: cat ./src/sbt-test/sbt-class-diagram/simple/test
     - run: sbt -v
            --server
            "++ ${{matrix.scala}}.x"
