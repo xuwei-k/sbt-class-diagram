@@ -8,6 +8,6 @@ addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.4.0")
 
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.6.0")
 
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.13.2")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.14.0")
 
 libraryDependencies += "com.github.xuwei-k" %% "scala-version-from-sbt-version" % "0.1.0"
