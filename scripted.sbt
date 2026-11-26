@@ -3,7 +3,7 @@ enablePlugins(ScriptedPlugin)
 scriptedBufferLog := false
 
 val javaVmArgs: List[String] = {
-  import scala.collection.JavaConverters._
+  import scala.jdk.CollectionConverters._
   java.lang.management.ManagementFactory.getRuntimeMXBean.getInputArguments.asScala.toList
 }
 
