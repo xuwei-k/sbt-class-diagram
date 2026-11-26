@@ -20,7 +20,9 @@ scalacOptions ++= Seq(
 scalacOptions ++= {
   scalaBinaryVersion.value match {
     case "3" =>
-      Nil
+      Seq(
+        "-Wconf:msg=it should not be used as infix operator:error",
+      )
     case _ =>
       Seq(
         "-release:8",

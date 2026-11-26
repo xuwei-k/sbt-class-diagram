@@ -63,7 +63,10 @@ object ClassDiagramPlugin extends AutoPlugin {
         ClassNode.decodeClassName(c.name)
       }
     ),
-    classDiagramClassNames := (classDiagramClassNames storeAs classDiagramClassNames triggeredBy (Compile / compile)).value,
+    classDiagramClassNames := classDiagramClassNames
+      .storeAs(classDiagramClassNames)
+      .triggeredBy(Compile / compile)
+      .value,
     classDiagramFileName := classDiagramFileName.?.value.getOrElse("classDiagram.svg"),
     classDiagram := {
       val svg = writeSVGTask.evaluated
@@ -95,7 +98,7 @@ object ClassDiagramPlugin extends AutoPlugin {
   }
 
   private[this] def distinctParser(exs: Set[String]): Parser[Seq[String]] = {
-    val base = token(Space) ~> token(NotSpace examples exs)
+    val base = token(Space) ~> token(NotSpace.examples(exs))
     base.flatMap { ex =>
       val (_, notMatching) = exs.partition(GlobFilter(ex).accept)
       distinctParser(notMatching).map { result => ex +: result }
