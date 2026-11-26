@@ -29,10 +29,7 @@ scalacOptions ++= {
   }
 }
 
-// https://github.com/sbt/sbt/issues/9187
-watchSources ++= Def.uncached(sbtTestDirectory.value.allPaths.get())
-
-def gitHash(): String = sys.process.Process("git rev-parse HEAD").lineStream_!.head
+def gitHash(): String = sys.process.Process("git rev-parse HEAD").lazyLines_!.head
 
 Compile / doc / scalacOptions ++= Def.uncached {
   val tag = if (isSnapshot.value) gitHash() else { "v" + version.value }
