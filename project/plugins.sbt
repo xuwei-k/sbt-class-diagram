@@ -10,4 +10,6 @@ addSbtPlugin("com.github.sbt" % "sbt-release" % "1.6.0")
 
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.14.0")
 
+addSbtPlugin("com.eed3si9n" % "sbt-salad-days" % "0.2.0")
+
 libraryDependencies += "com.github.xuwei-k" %% "scala-version-from-sbt-version" % "0.2.0"
