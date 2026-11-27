@@ -49,7 +49,6 @@ releaseProcess := Seq[ReleaseStep](
   inquireVersions,
   runClean,
   releaseStepCommandAndRemaining("+ test"),
-  releaseStepCommandAndRemaining("+ scripted"),
   setReleaseVersion,
   updateReadmeProcess,
   commitReleaseVersion,
